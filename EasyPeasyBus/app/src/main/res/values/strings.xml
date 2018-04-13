@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Easy Peasy Bus</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
