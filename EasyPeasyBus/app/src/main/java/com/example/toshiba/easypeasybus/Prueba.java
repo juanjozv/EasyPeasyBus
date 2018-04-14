@@ -37,7 +37,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Maps extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, DirectionCallback {
+public class Prueba extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, DirectionCallback {
     private Button btnRequestDirection;
     private GoogleMap mMap;
     private String serverKey = "AIzaSyCoym0yWt2nGhROurj_RESVXZCryKGxaws";

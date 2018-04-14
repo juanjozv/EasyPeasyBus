@@ -134,6 +134,8 @@ public class Main extends AppCompatActivity
                         break;
 
                     case R.id.cardViewGastos:
+                        intento = new Intent(getApplicationContext(), Prueba.class);
+                        startActivity(intento);
 
 
                         break;

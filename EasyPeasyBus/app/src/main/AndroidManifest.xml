@@ -41,6 +41,9 @@
         <activity
             android:name=".Maps"
             android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".Prueba"
+            android:label="@string/title_activity_prueba"></activity>
     </application>
 
 </manifest>
