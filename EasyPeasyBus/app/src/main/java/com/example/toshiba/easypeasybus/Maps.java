@@ -2,9 +2,11 @@ package com.example.toshiba.easypeasybus;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,8 +21,15 @@ import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -31,6 +40,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -38,11 +48,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Maps extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, DirectionCallback {
-    private Button btnRequestDirection;
+    private CardView btnRequestDirection;
     private GoogleMap mMap;
     private String serverKey = "AIzaSyCoym0yWt2nGhROurj_RESVXZCryKGxaws";
     private LatLng origin = new LatLng(10.0159631, -84.21416699999999);
     private LatLng destination = new LatLng(9.9277704, -84.0908422);
+
+    private Location mLocation;
+
+
+
+    Marker marker;
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -57,22 +73,8 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
-                getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                System.out.print(place.getName());
-            }
-
-            @Override
-            public void onError(Status status) {
-                //System.out.print(status);
-
-            }
-        });
-
+        setOnPlaceSelectedListener(R.id.place_autocomplete_fragment_origin);
+        setOnPlaceSelectedListener(R.id.place_autocomplete_fragment_destiny);
 
 
     }
@@ -162,5 +164,24 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
                 // The user canceled the operation.
             }
         }
+    }
+
+    public void setOnPlaceSelectedListener(int ref){
+        PlaceAutocompleteFragment placeAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(ref);
+
+        placeAutocompleteFragment.setHint(ref == R.id.place_autocomplete_fragment_origin ? "Ingresar origen" : "Ingresar destino");
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                System.out.print(place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                //System.out.print(status);
+
+            }
+        });
     }
 }
