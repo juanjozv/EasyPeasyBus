@@ -138,6 +138,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                         // Sign in success, update UI with the signed-in user's information
                         //Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+                     //   obtainUserData(user);
                         //updateUI(user);
                     } else {
                         // If sign in fails, display a message to the user.
@@ -151,8 +152,8 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                 });
     }
 
-    public void obtainUserData() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public void obtainUserData(FirebaseUser user) {
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
             String name = user.getDisplayName();
@@ -166,6 +167,8 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getToken() instead.
             String uid = user.getUid();
+            TextView navEmail = (TextView) findViewById(R.id.navEmail);
+            navEmail.setText(email);
         }
     }
 
@@ -259,10 +262,13 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            //showProgress(true);
-            //mAuthTask = new UserLoginTask(email, password);
-            //mAuthTask.execute((Void) null);
+
             signIn(email, password);
+            showProgress(true);
+
+            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask.execute((Void) null);
+
         }
     }
 

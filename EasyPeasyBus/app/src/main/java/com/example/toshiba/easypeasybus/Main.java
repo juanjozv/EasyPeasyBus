@@ -109,6 +109,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String email = user.getEmail();
+                            TextView navEmail = (TextView) findViewById(R.id.navEmail);
+                            navEmail.setText(email);
                         } else {
                             Mensaje(task.getException().getMessage());
                         }
@@ -184,14 +187,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
     public void OnclickDelCardView(int ref) {
         View view =findViewById(ref);
         CardView miCardView = (CardView) view;
-        miCardView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
+        miCardView.setOnClickListener( v -> {
                 switch (v.getId()) {
                     case R.id.cardViewMapa:
                         Intent intento = new Intent(getApplicationContext(), Maps.class);
@@ -199,7 +201,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         break;
 
                     case R.id.cardViewPlanificador:
-                        String url = "http://maps.google.com/maps?saddr="+9.996557+","+-84.085443+"&daddr="+9.984507+","+-84.086754+"&mode=transit";
+                        String url = "http://maps.google.com/maps?saddr=" + 9.996557 + "," + -84.085443 + "&daddr=" + 9.984507 + "," + -84.086754 + "&mode=transit";
                         //"http://maps.google.com/maps?saddr="+ starting_point_lat+","+starting_point_long+"&daddr="+dest_point_lat+","+dest_point_long+"&mode=transit"
 
                         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
@@ -211,15 +213,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     case R.id.cardViewGastos:
 
 
-
                         break;
 
                     case R.id.cardViewHorarios:
 
                         break;
-                    default:break;
+                    default:
+                        break;
                 }
-            }
         });
     }
 }
