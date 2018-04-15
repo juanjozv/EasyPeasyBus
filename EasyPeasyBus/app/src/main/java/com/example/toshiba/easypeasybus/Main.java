@@ -92,18 +92,14 @@ public class Main extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
+        if (id == R.id.iniciarSesion) {
+            Intent intento = new Intent(getApplicationContext(), Login.class);
+            startActivity(intento);
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.cerrarSesion) {
+            Intent intento = new Intent(getApplicationContext(), Login.class);
+            startActivity(intento);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -134,8 +130,7 @@ public class Main extends AppCompatActivity
                         break;
 
                     case R.id.cardViewGastos:
-                       // intento = new Intent(getApplicationContext(), Prueba.class);
-                       // startActivity(intento);
+
 
 
                         break;
