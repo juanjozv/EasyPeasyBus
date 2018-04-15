@@ -14,6 +14,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import java.util.Collection.*;
 import java.util.Collections;
 import  java.util.stream.Stream;
@@ -23,6 +25,7 @@ import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.model.Info;
 import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
@@ -100,6 +103,13 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
                 .execute(this);
     }
 
+    public void showDurationDistance(String duration, String distance) {
+        TextView dura = (TextView) findViewById(R.id.duracion);
+        dura.setText("Duración: " + duration + " (aprox.)");
+        TextView dis = (TextView) findViewById(R.id.distancia);
+        dis.setText("Distancia: " + distance);
+    }
+
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
         refreshMap();
@@ -107,13 +117,21 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         if (direction.isOK()) {
             Route route = direction.getRouteList().get(0);
             Leg leg = route.getLegList().get(0);
+
+            Info distanceInfo = leg.getDistance();
+            Info durationInfo = leg.getDuration();
+            String distance = distanceInfo.getText();
+            String duration = durationInfo.getText();
+
+            showDurationDistance(duration, distance);
+
             ArrayList<LatLng> sectionPositionList = leg.getSectionPoint();
             /*for (LatLng position : sectionPositionList) {
                 mMap.addMarker(new MarkerOptions().position(position));
             }*/
             markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(0))));
             int size = sectionPositionList.size() - 1;
-           markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(size))));
+            markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(size))));
 
             List<Step> stepList = leg.getStepList();
             ArrayList<PolylineOptions> polylineOptionList = DirectionConverter.createTransitPolyline(this, stepList, 5, Color.RED, 3, Color.BLUE);
@@ -146,6 +164,10 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             listener = new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
+                    TextView dura = (TextView) findViewById(R.id.duracion);
+                    dura.setText("Duración: ");
+                    TextView dis = (TextView) findViewById(R.id.distancia);
+                    dis.setText("Distancia: ");
                     origin = place.getLatLng();
                 }
                 @Override
@@ -155,6 +177,10 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             listener = new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
+                    TextView dura = (TextView) findViewById(R.id.duracion);
+                    dura.setText("Duración: ");
+                    TextView dis = (TextView) findViewById(R.id.distancia);
+                    dis.setText("Distancia: ");
                     destination = place.getLatLng();
                 }
                 @Override

@@ -17,7 +17,7 @@ android:layout_height="match_parent">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="133dp">
+            android:layout_height="match_parent">
 
 
             <LinearLayout
@@ -63,13 +63,48 @@ android:layout_height="match_parent">
 
         </TableRow>
 
-
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/blue">
 
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/blue">
+
+                    <TextView
+                        android:id="@+id/distancia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Distancia:"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/blue">
+
+                    <TextView
+                        android:id="@+id/duracion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Duración:"
+                        android:textAlignment="viewStart"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+
+                </TableRow>
+
+            </TableLayout>
         </TableRow>
+
 
         <TableRow
             android:layout_width="match_parent"
