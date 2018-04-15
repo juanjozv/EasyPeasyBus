@@ -1,7 +1,10 @@
 package com.example.toshiba.easypeasybus;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +14,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import java.util.Collection.*;
+import java.util.Collections;
+import  java.util.stream.Stream;
+
 
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -32,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +50,8 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
     private String serverKey = "AIzaSyCoym0yWt2nGhROurj_RESVXZCryKGxaws";
     private LatLng origin = new LatLng(10.0159631, -84.21416699999999);
     private LatLng destination = new LatLng(9.9277704, -84.0908422);
+    private List<Polyline> polylines = new ArrayList<Polyline>();
+    private List<Marker> markers = new ArrayList<Marker>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +96,13 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
                 .to(destination)
-                .transportMode(TransportMode.TRANSIT)
+                .transportMode(TransportMode.DRIVING)
                 .execute(this);
     }
 
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
+        refreshMap();
         Snackbar.make(btnRequestDirection, "Success with status : " + direction.getStatus(), Snackbar.LENGTH_SHORT).show();
         if (direction.isOK()) {
             Route route = direction.getRouteList().get(0);
@@ -100,14 +111,14 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             /*for (LatLng position : sectionPositionList) {
                 mMap.addMarker(new MarkerOptions().position(position));
             }*/
-            mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(0)));
+            markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(0))));
             int size = sectionPositionList.size() - 1;
-            mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(size)));
+           markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(size))));
 
             List<Step> stepList = leg.getStepList();
             ArrayList<PolylineOptions> polylineOptionList = DirectionConverter.createTransitPolyline(this, stepList, 5, Color.RED, 3, Color.BLUE);
             for (PolylineOptions polylineOption : polylineOptionList) {
-                mMap.addPolyline(polylineOption);
+                polylines.add(mMap.addPolyline(polylineOption));
             }
             setCameraWithCoordinationBounds(route);
 
@@ -161,6 +172,17 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         PlaceSelectionListener listener = obtainPlaceSelectionListener(listenerType);
         placeAutocompleteFragment.setOnPlaceSelectedListener(listener);
     }
+
+    public void refreshMap(){
+        for(Marker marker : markers)
+            marker.remove();
+        markers.clear();
+
+        for(Polyline line : polylines)
+            line.remove();
+        polylines.clear();
+    }
+
     
     
 }
