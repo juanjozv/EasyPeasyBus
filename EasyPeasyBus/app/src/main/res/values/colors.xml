@@ -31,4 +31,5 @@
     <color name="md_yellow_500_25">#40ffeb3b</color>
     <color name="md_yellow_500_50">#80ffeb3b</color>
     <color name="md_yellow_500_75">#c0ffeb3b</color>
+    <color name="trans">#00000000 </color>
 </resources>

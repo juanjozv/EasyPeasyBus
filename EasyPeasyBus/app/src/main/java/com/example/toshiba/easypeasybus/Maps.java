@@ -10,6 +10,7 @@ import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -130,7 +131,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             }
             setCameraWithCoordinationBounds(route);
 
-            btnRequestDirection.setVisibility(View.GONE);
+            //btnRequestDirection.setVisibility(View.GONE);
         } else {
             Snackbar.make(btnRequestDirection, direction.getStatus(), Snackbar.LENGTH_SHORT).show();
         }
