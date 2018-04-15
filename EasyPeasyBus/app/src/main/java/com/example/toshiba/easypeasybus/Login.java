@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,8 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                         // Sign in success, update UI with the signed-in user's information
                         //Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Many Negro").build();
+                        user.updateProfile(profileUpdates);
                      //   obtainUserData(user);
                         //updateUI(user);
                     } else {

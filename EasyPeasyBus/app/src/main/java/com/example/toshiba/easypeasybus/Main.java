@@ -46,8 +46,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
 
-        signIn("many@negro.com", "123456");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -58,26 +58,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("Hello, World!");
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Mensaje("Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Mensaje( "Failed to read value.");
-            }
-        });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -101,40 +83,24 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     public void Mensaje(String msg){Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();};
 
-    public void signIn(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            String email = user.getEmail();
-                            TextView navEmail = (TextView) findViewById(R.id.navEmail);
-                            navEmail.setText(email);
-                        } else {
-                            Mensaje(task.getException().getMessage());
-                        }
-                    }
-                });
 
-    }
 
-    /*@Override
+    @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-
-        signIn("juanjo@gmail.com", "123456");
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
+        updateUserInformation(currentUser);
+
+
+    }
+    private void updateUserInformation(FirebaseUser currentUser) {
         if(currentUser != null) {
-            TextView Mi_edittext = (TextView) findViewById(R.id.navName);
-            Mi_edittext.setText(currentUser.getDisplayName());
-            TextView Mi_edittext2 = (TextView) findViewById(R.id.navName);
-            Mi_edittext2.setText(currentUser.getEmail());
+            TextView name = (TextView) findViewById(R.id.navName);
+            name.setText(currentUser.getDisplayName());
+            TextView email = (TextView) findViewById(R.id.navEmail);
+            email.setText(currentUser.getEmail());
         }
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
