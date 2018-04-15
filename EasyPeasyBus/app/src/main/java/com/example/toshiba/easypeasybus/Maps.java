@@ -1,25 +1,18 @@
 package com.example.toshiba.easypeasybus;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
-import android.location.Location;
-import android.os.Build;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Collection.*;
-import java.util.Collections;
-import  java.util.stream.Stream;
-
 
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -38,28 +31,37 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Maps extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, DirectionCallback {
+    private static final int REQUEST_LOCATION = 1;
+
     private CardView btnRequestDirection;
     private GoogleMap mMap;
     private String serverKey = "AIzaSyCoym0yWt2nGhROurj_RESVXZCryKGxaws";
-    private LatLng origin = new LatLng(10.0159631, -84.21416699999999);
-    private LatLng destination = new LatLng(9.9277704, -84.0908422);
+    private LatLng origin;
+    private LatLng destination;
     private List<Polyline> polylines = new ArrayList<Polyline>();
     private List<Marker> markers = new ArrayList<Marker>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
         btnRequestDirection = findViewById(R.id.btn_request_direction);
         btnRequestDirection.setOnClickListener(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -70,8 +72,9 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         setOnPlaceSelectedListener(R.id.place_autocomplete_fragment_origin);
         setOnPlaceSelectedListener(R.id.place_autocomplete_fragment_destiny);
 
+
     }
-    
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -84,6 +87,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
+
     }
 
     @Override
@@ -94,8 +98,10 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         }
     }
 
+
+
     public void requestDirection() {
-        Snackbar.make(btnRequestDirection, "Direction Requesting...", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(btnRequestDirection, "Generando ruta...", Snackbar.LENGTH_SHORT).show();
         GoogleDirection.withServerKey(serverKey)
                 .from(origin)
                 .to(destination)
@@ -126,17 +132,27 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             showDurationDistance(duration, distance);
 
             ArrayList<LatLng> sectionPositionList = leg.getSectionPoint();
-            /*for (LatLng position : sectionPositionList) {
-                mMap.addMarker(new MarkerOptions().position(position));
-            }*/
+            for (LatLng position : sectionPositionList) {
+                mMap.addMarker(new MarkerOptions().position(position)
+                        .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_directions_bus_black))
+                        .title("Parada de autobús")
+                );
+            }
             markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(0))));
             int size = sectionPositionList.size() - 1;
-            markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(size))));
 
+           markers.add(
+                   mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(size))
+                           .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+           ));
+            List<LatLng> p;
             List<Step> stepList = leg.getStepList();
             ArrayList<PolylineOptions> polylineOptionList = DirectionConverter.createTransitPolyline(this, stepList, 5, Color.RED, 3, Color.BLUE);
             for (PolylineOptions polylineOption : polylineOptionList) {
-                polylines.add(mMap.addPolyline(polylineOption));
+                polylines.add(mMap.addPolyline(
+                        polylineOption.color(Color.parseColor("#3399FF"))
+
+                ));
             }
             setCameraWithCoordinationBounds(route);
 
@@ -207,6 +223,14 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         for(Polyline line : polylines)
             line.remove();
         polylines.clear();
+    }
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     
