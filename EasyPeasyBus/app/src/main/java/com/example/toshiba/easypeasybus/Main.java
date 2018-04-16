@@ -38,6 +38,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     private FirebaseAuth mAuth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -81,7 +81,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    public void Mensaje(String msg){Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();};
+    public void Mensaje(String msg){Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();}
 
 
 
@@ -89,11 +89,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUserInformation(currentUser);
-
-
+        updateUI(currentUser);
     }
-    private void updateUserInformation(FirebaseUser currentUser) {
+
+    private void updateUI(FirebaseUser currentUser) {
         if(currentUser != null) {
             TextView name = (TextView) findViewById(R.id.navName);
             name.setText(currentUser.getDisplayName());
@@ -143,11 +142,16 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         if (id == R.id.iniciarSesion) {
             Intent intento = new Intent(getApplicationContext(), Login.class);
             startActivity(intento);
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.video) {
 
         } else if (id == R.id.cerrarSesion) {
-            Intent intento = new Intent(getApplicationContext(), Login.class);
-            startActivity(intento);
+            mAuth.signOut();
+            TextView name = (TextView) findViewById(R.id.navName);
+            name.setText(R.string.nav_header_title);
+            TextView email = (TextView) findViewById(R.id.navEmail);
+            email.setText(R.string.nav_header_subtitle);
+            Mensaje("Se ha cerrado la sesión");
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

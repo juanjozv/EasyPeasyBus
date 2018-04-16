@@ -120,11 +120,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                             FirebaseUser user = mAuth.getCurrentUser();
                             //updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            //Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            //.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                    //Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
+
                         }
 
                         // ...
@@ -139,7 +135,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                         // Sign in success, update UI with the signed-in user's information
                         //Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Many Negro").build();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Oscar Salazar").build();
                         user.updateProfile(profileUpdates);
                      //   obtainUserData(user);
                         //updateUI(user);

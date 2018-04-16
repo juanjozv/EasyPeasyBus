@@ -14,9 +14,9 @@
             android:title="Crear Cuenta" />
 
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/video"
+            android:icon="@drawable/ic_video_library_red"
+            android:title="Ver video de la app" />
     </group>
 
     <item android:title="Otros">
