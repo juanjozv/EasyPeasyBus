@@ -143,6 +143,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             Intent intento = new Intent(getApplicationContext(), Login.class);
             startActivity(intento);
         } else if (id == R.id.video) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse( "https://youtu.be/WEUmaALyPRM" ));
+            startActivity(i);
+
 
         } else if (id == R.id.cerrarSesion) {
             mAuth.signOut();
