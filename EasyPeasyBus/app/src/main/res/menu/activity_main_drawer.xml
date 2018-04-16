@@ -22,9 +22,14 @@
     <item android:title="Otros">
         <menu>
             <item
+                android:id="@+id/autores"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="Autores" />
+            <item
                 android:id="@+id/cerrarSesion"
                 android:icon="@drawable/ic_power_settings_new_black_24dp"
                 android:title="Cerrar Sesión" />
+
         </menu>
     </item>
 
