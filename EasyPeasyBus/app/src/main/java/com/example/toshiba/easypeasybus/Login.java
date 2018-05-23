@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -476,13 +477,10 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
 
     private void updateUI(FirebaseUser account) {
         if(account != null) {
-            //Intent intento = new Intent(getApplicationContext(), MainActivity.class);
-            //startActivity(intento);
-            Mensaje("Iniciaste con google");
-            //obtainUserData(account);
-            /*Intent intento = new Intent(getApplicationContext(), Main.class);
-            startActivity(intento);*/
+            Intent intento = new Intent(getApplicationContext(), Main.class);
+            startActivity(intento);
         }
+
 
     }
 

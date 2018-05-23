@@ -36,7 +36,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
+        //mAuth.signOut();
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -79,19 +80,20 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //Mensaje(currentUser.getDisplayName());
+        //if(currentUser!= null) Mensaje(currentUser.getDisplayName());
         updateUI(currentUser);
     }
 
     private void updateUI(FirebaseUser currentUser) {
         if(currentUser != null) {
-            TextView name = (TextView) findViewById(R.id.navName);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            TextView name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navName);
             name.setText(currentUser.getDisplayName());
-            TextView email = (TextView) findViewById(R.id.navEmail);
+            TextView email = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navEmail);
             email.setText(currentUser.getEmail());
             Uri photoUrl = currentUser.getPhotoUrl();
 
-            ImageView Mi_imageview = (ImageView) findViewById(R.id.imageView2);
+            ImageView Mi_imageview = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView2);
             Glide
                     .with(getApplicationContext())
                     .load(photoUrl) // the uri you got from Firebase
