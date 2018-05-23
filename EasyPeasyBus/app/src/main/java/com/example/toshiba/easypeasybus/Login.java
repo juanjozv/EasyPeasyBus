@@ -252,7 +252,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         if (cancel) {
             focusView.requestFocus();
         } else {
-            //signIn(email, password);
+            signIn(email, password);
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
