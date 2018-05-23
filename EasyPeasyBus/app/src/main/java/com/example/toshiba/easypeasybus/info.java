@@ -3,7 +3,7 @@ package com.example.toshiba.easypeasybus;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class info extends AppCompatActivity {
+public class Info extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
