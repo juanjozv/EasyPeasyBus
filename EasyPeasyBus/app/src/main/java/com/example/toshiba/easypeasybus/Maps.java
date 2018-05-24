@@ -24,6 +24,7 @@ import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -71,6 +72,9 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
 
         setOnPlaceSelectedListener(R.id.place_autocomplete_fragment_origin);
         setOnPlaceSelectedListener(R.id.place_autocomplete_fragment_destiny);
+
+
+
 
 
     }
@@ -224,6 +228,13 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         String listenerType = ref == (R.id.place_autocomplete_fragment_origin) ? "Origen" : "Destino";
         PlaceSelectionListener listener = obtainPlaceSelectionListener(listenerType);
         placeAutocompleteFragment.setOnPlaceSelectedListener(listener);
+
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(Place.TYPE_COUNTRY)
+                .setCountry("CR")
+                .build();
+
+        placeAutocompleteFragment.setFilter(autocompleteFilter);
     }
 
     public void refreshMap(){
