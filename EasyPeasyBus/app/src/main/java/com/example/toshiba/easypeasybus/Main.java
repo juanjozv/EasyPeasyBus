@@ -80,7 +80,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //if(currentUser!= null) Mensaje(currentUser.getDisplayName());
         updateUI(currentUser);
     }
 
@@ -92,13 +91,17 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             TextView email = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navEmail);
             email.setText(currentUser.getEmail());
             Uri photoUrl = currentUser.getPhotoUrl();
-
-            ImageView Mi_imageview = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView2);
-            Glide
-                    .with(getApplicationContext())
-                    .load(photoUrl) // the uri you got from Firebase
-                    .centerCrop()
-                    .into(Mi_imageview); //Your imageView variable
+            if(photoUrl != null) {
+                ImageView Mi_imageview = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView2);
+                Glide
+                        .with(getApplicationContext())
+                        .load(photoUrl) // the uri you got from Firebase
+                        .centerCrop()
+                        .into(Mi_imageview); //Your imageView variable
+            }else {
+                ImageView Mi_imageview = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView2);
+                Mi_imageview.setImageResource(R.drawable.ic_account_circle_white_100dp);
+            }
         }
     }
 
@@ -162,6 +165,11 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             Mi_imageview.setImageResource(R.drawable.ic_account_circle_white_100dp);
             Mensaje("Se ha cerrado la sesión");
 
+        } else if (id == R.id.crearCuenta) {
+            APBAuth auth = APBAuth.getInstance();
+            auth.setCreatingAccount(true);
+            Intent intento = new Intent(getApplicationContext(), Login.class);
+            startActivity(intento);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

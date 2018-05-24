@@ -107,16 +107,17 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         mAuth = FirebaseAuth.getInstance();
 
         SignInButton MiButton = (SignInButton) findViewById(R.id.sign_in_button);
-        MiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                usingGoogle = true;
-                googleSignIn();
-                //attemptLogin();
-                //showProgress(true);
-            }
-
+        MiButton.setOnClickListener(arg0 -> {
+            usingGoogle = true;
+            googleSignIn();
         });
+
+        APBAuth auth = APBAuth.getInstance();
+        if(auth.getCreatingAccount()) {
+            MiButton.setVisibility(View.GONE);
+            Button buttonIniciar = (Button) findViewById(R.id.email_sign_in_button);
+            buttonIniciar.setText("Crear cuenta");
+        }
 
         //----------------------------------------------------------------------------------------------
 
@@ -252,7 +253,11 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
         if (cancel) {
             focusView.requestFocus();
         } else {
-            signIn(email, password);
+            APBAuth auth = APBAuth.getInstance();
+            if(auth.getCreatingAccount()) {
+                signUp(email, password);
+            }
+            else signIn(email, password);
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -414,13 +419,32 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        //Log.d(TAG, "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Oscar Salazar").build();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Auto Peasy Bus").build();
                         user.updateProfile(profileUpdates);
-
                     } else {
+                        Mensaje(task.getException().getMessage());
+                        showProgress(false);
+                    }
+                });
+    }
 
+    public void signUp(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Auto Peasy Bus").build();
+                            user.updateProfile(profileUpdates);
+                            APBAuth auth = APBAuth.getInstance();
+                            auth.setCreatingAccount(false);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Mensaje(task.getException().getMessage());
+                        }
                     }
                 });
     }
@@ -447,7 +471,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                 firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed, update UI appropriately
-                Mensaje("Aquí falló");
+                Mensaje("No se pudo autenticar cuenta Google.");
             }
         }
     }
@@ -481,7 +505,14 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
             startActivity(intento);
         }
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        APBAuth auth = APBAuth.getInstance();
+        auth.setCreatingAccount(false);
+        Intent intento = new Intent(getApplicationContext(), Main.class);
+        startActivity(intento);
     }
 
 

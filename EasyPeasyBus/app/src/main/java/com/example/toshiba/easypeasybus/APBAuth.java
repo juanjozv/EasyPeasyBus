@@ -7,12 +7,14 @@ public class APBAuth {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private Boolean isCreatingAccount;
 
     private static APBAuth instance = null;
 
     protected APBAuth() {
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        this.mAuth = FirebaseAuth.getInstance();
+        this.currentUser = mAuth.getCurrentUser();
+        this.isCreatingAccount = false;
     }
 
     public static APBAuth getInstance() {
@@ -38,5 +40,13 @@ public class APBAuth {
 
     public void signOut() {
         this.mAuth.signOut();
+    }
+
+    public Boolean getCreatingAccount() {
+        return isCreatingAccount;
+    }
+
+    public void setCreatingAccount(Boolean creatingAccount) {
+        isCreatingAccount = creatingAccount;
     }
 }
