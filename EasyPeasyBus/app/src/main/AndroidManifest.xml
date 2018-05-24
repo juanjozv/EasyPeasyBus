@@ -52,7 +52,7 @@
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login" />
-        <activity android:name=".Info"></activity>
+        <activity android:name=".Info" />
     </application>
 
 </manifest>

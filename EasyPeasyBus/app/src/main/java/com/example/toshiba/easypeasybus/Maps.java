@@ -87,6 +87,9 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
+        LatLng costaRica = new LatLng(9.923776, -84.088798);
+        int zoomLevel = 14;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(costaRica, zoomLevel));
 
     }
 
@@ -111,9 +114,9 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
 
     public void showDurationDistance(String duration, String distance) {
         TextView dura = (TextView) findViewById(R.id.duracion);
-        dura.setText("Duración: " + duration + " (aprox.)");
+        dura.setText(duration);
         TextView dis = (TextView) findViewById(R.id.distancia);
-        dis.setText("Distancia: " + distance);
+        dis.setText(distance);
     }
 
     @Override
@@ -132,12 +135,12 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             showDurationDistance(duration, distance);
 
             ArrayList<LatLng> sectionPositionList = leg.getSectionPoint();
-            for (LatLng position : sectionPositionList) {
+           /* for (LatLng position : sectionPositionList) {
                 mMap.addMarker(new MarkerOptions().position(position)
                         .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_directions_bus_black))
                         .title("Parada de autobús")
                 );
-            }
+            }*/
             markers.add(mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(0))));
             int size = sectionPositionList.size() - 1;
 
@@ -145,14 +148,28 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
                    mMap.addMarker(new MarkerOptions().position(sectionPositionList.get(size))
                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
            ));
-            List<LatLng> p;
+
             List<Step> stepList = leg.getStepList();
+            int count = 0;
             ArrayList<PolylineOptions> polylineOptionList = DirectionConverter.createTransitPolyline(this, stepList, 5, Color.RED, 3, Color.BLUE);
             for (PolylineOptions polylineOption : polylineOptionList) {
                 polylines.add(mMap.addPolyline(
                         polylineOption.color(Color.parseColor("#3399FF"))
 
                 ));
+
+
+                    List<LatLng> coordinates = polylineOption.getPoints();
+                    for(LatLng coordinate : coordinates){
+                        if(count++ % 24 == 0) {
+                            markers.add(mMap.addMarker(new MarkerOptions().position(coordinate)
+                                    .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_directions_bus_black))
+                                    .title("Parada de autobús")
+                            ));
+                        }
+                    }
+
+
             }
             setCameraWithCoordinationBounds(route);
 
@@ -180,10 +197,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             listener = new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    TextView dura = (TextView) findViewById(R.id.duracion);
-                    dura.setText("Duración: ");
-                    TextView dis = (TextView) findViewById(R.id.distancia);
-                    dis.setText("Distancia: ");
+
                     origin = place.getLatLng();
                 }
                 @Override
@@ -193,10 +207,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
             listener = new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    TextView dura = (TextView) findViewById(R.id.duracion);
-                    dura.setText("Duración: ");
-                    TextView dis = (TextView) findViewById(R.id.distancia);
-                    dis.setText("Distancia: ");
+
                     destination = place.getLatLng();
                 }
                 @Override
@@ -232,6 +243,8 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+
 
     
     

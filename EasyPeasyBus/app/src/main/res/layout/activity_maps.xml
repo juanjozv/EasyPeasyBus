@@ -1,129 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/topPanel"
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TableRow
+        <fragment
+            android:id="@+id/place_autocomplete_fragment_origin"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/place_autocomplete_fragment_destiny"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/duracion"
+                android:layout_width="117dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="1dp"
+                android:layout_weight="1"
+                android:paddingStart="2dp"
+                android:paddingVertical="10dp"
 
-            <LinearLayout
-                android:layout_width="292dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:text=""
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <fragment
-                    android:id="@+id/place_autocomplete_fragment_origin"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5" />
+            <ImageView
 
-                <fragment
-                    android:id="@+id/place_autocomplete_fragment_destiny"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5" />
+                android:id="@+id/imageView"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
 
-            </LinearLayout>
+
+                android:src="@drawable/access_time"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/duracion"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/distancia"
+                android:layout_width="73dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:paddingStart="2dp"
+                android:paddingVertical="10dp"
+
+
+                android:text=""
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+
+                android:id="@+id/imageView3"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+
+
+                android:src="@drawable/distance_to_travel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/distancia"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.461" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/btn_request_direction"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
 
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground">
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:background="@drawable/rectanglebackgroundblue"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_search_white_24dp" />
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/rectanglebackgroundblue"
+                        android:paddingVertical="10dp"
+                        android:src="@drawable/ic_search_white_24dp" />
+
+                    <TextView
+                        android:id="@+id/etiqueta_buscar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/rectanglebackgroundblue"
+                        android:paddingVertical="10dp"
+                        android:text="Buscar ruta"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
 
 
             </android.support.v7.widget.CardView>
+        </android.support.constraint.ConstraintLayout>
 
+    </TableRow>
 
-        </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TableRow
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/blue">
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            tools:context="com.example.toshiba.easypeasybus.Maps" />
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/blue">
-
-                    <TextView
-                        android:id="@+id/distancia"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Distancia:"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/blue">
-
-                    <TextView
-                        android:id="@+id/duracion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Duración:"
-                        android:textAlignment="viewStart"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp" />
-
-                </TableRow>
-
-            </TableLayout>
-        </TableRow>
+    </TableRow>
 
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-
-                tools:context="com.example.toshiba.easypeasybus.Maps" />
 
 
-        </TableRow>
+</TableLayout>
 
-
-    </TableLayout>
-
-</RelativeLayout>
 
