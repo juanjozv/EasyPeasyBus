@@ -127,6 +127,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/rectanglebackgroundblue"
                         android:paddingVertical="10dp"
+                        android:paddingRight="2dp"
                         android:text="Buscar ruta"
                         android:textColor="@android:color/background_light"
                         android:textSize="15sp" />

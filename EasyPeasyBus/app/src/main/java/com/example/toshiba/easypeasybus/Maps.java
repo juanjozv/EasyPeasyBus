@@ -242,8 +242,4 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-
-
-    
-    
 }
