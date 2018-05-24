@@ -196,30 +196,17 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, View.O
     }
 
     public PlaceSelectionListener obtainPlaceSelectionListener(String location) {
-        PlaceSelectionListener listener;
-        if(location == "Origen") {
-            listener = new PlaceSelectionListener() {
-                @Override
-                public void onPlaceSelected(Place place) {
-
+        return new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                if(location == "Origen")
                     origin = place.getLatLng();
-                }
-                @Override
-                public void onError(Status status) {}
-            };
-        }else {
-            listener = new PlaceSelectionListener() {
-                @Override
-                public void onPlaceSelected(Place place) {
-
+                else
                     destination = place.getLatLng();
-                }
-                @Override
-                public void onError(Status status) {}
-            };
-
-        }
-        return listener;
+            }
+            @Override
+            public void onError(Status status) {}
+        };
     }
 
     public void setOnPlaceSelectedListener(final int ref){
