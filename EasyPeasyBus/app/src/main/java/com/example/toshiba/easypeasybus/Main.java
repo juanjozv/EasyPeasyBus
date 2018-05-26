@@ -199,7 +199,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         break;
 
                     case R.id.cardViewGastos:
-
+                        Intent intento2 = new Intent(getApplicationContext(), Gastos.class);
+                        startActivity(intento2);
 
                         break;
 
