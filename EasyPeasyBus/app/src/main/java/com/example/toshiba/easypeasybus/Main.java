@@ -182,9 +182,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         View view =findViewById(ref);
         CardView miCardView = (CardView) view;
         miCardView.setOnClickListener( v -> {
+            Intent intento;
                 switch (v.getId()) {
                     case R.id.cardViewMapa:
-                        Intent intento = new Intent(getApplicationContext(), Maps.class);
+                        intento = new Intent(getApplicationContext(), Maps.class);
                         startActivity(intento);
                         break;
 
@@ -192,9 +193,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         String url = "http://maps.google.com/maps?saddr=" + 9.996557 + "," + -84.085443 + "&daddr=" + 9.984507 + "," + -84.086754 + "&mode=transit";
                         //"http://maps.google.com/maps?saddr="+ starting_point_lat+","+starting_point_long+"&daddr="+dest_point_lat+","+dest_point_long+"&mode=transit"
 
-                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        intento = new Intent(android.content.Intent.ACTION_VIEW,
                                 Uri.parse(url));
-                        startActivity(intent);
+                        startActivity(intento);
 
                         break;
 
@@ -205,7 +206,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         break;
 
                     case R.id.cardViewHorarios:
-
+                        intento = new Intent(getApplicationContext(), Horario.class);
+                        startActivity(intento);
                         break;
                     default:
                         break;
