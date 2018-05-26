@@ -34,7 +34,7 @@ public class Gastos extends AppCompatActivity {
                 case R.id.resume:
                     fm = getFragmentManager();
                     fragmentTransaction = fm.beginTransaction();
-                    ResumenGasto mifrag2 = new ResumenGasto();
+                    FechaResumen mifrag2 = new FechaResumen();
                     fragmentTransaction.replace(R.id.contenedor, mifrag2, "Indentifier2");
                     fragmentTransaction.commit();
                     break;

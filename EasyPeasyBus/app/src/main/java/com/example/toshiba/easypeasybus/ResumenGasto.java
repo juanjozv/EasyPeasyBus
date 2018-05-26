@@ -2,6 +2,8 @@ package com.example.toshiba.easypeasybus;
 
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -36,6 +41,7 @@ public class ResumenGasto extends Fragment {
     private FirebaseAuth mAuth;
     ArrayList<String> gastos = new ArrayList<>();
     HashMap<String, String> info = new HashMap<>();
+    Integer totalDayAmount = 0;
 
 
 
@@ -57,6 +63,12 @@ public class ResumenGasto extends Fragment {
         DandoClickALosItems();
         obtainUserDailyMounts();
 
+        LinearLayout MiLinearLayout = (LinearLayout) view.findViewById(R.id.total);
+        MiLinearLayout.setOnClickListener(v -> {
+            showTotalDayAmount(totalDayAmount);
+        });
+
+
         return view;
     }
 
@@ -66,7 +78,6 @@ public class ResumenGasto extends Fragment {
     }
 
     private void createHash(Integer index, String informacion) {
-        info = new HashMap<>();
         info.put(index.toString(), informacion);
     }
 
@@ -75,6 +86,8 @@ public class ResumenGasto extends Fragment {
         if(user != null) {
             String email = formatEmailFirebaseFormat(user.getEmail());
             gastos = new ArrayList<>();
+            info = new HashMap<>();
+            //totalDayAmount = 0;
             myRef = myRef.child(email);
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -83,12 +96,15 @@ public class ResumenGasto extends Fragment {
                     Integer index = 1;
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         action = postSnapshot.getValue(Action.class);
-                        assert action != null;
-                        String nombre = action.getBusName();
-                        gastos.add(index + ". " + nombre);
-                        String informacion = generateActionInfo(action);
-                        createHash(index, informacion);
-                        index++;
+                        APBAuth apb = APBAuth.getInstance();
+                        if(apb.getDateSelected().equals(action.getDate())) {
+                            String nombre = action.getBusName();
+                            totalDayAmount += action.getAmount();
+                            gastos.add(index + ". " + nombre);
+                            String informacion = generateActionInfo(action);
+                            createHash(index, informacion);
+                            index++;
+                        }
                     }
                     LlenarListView();
                 }
@@ -107,6 +123,10 @@ public class ResumenGasto extends Fragment {
                     android.R.layout.simple_list_item_1, gastos);
             ListView milistview = (ListView) v1.findViewById(R.id.list);
             milistview.setAdapter(adaptador);
+
+            if(gastos.size() < 1) {
+                MensajeOK("No hay acciones en este día");
+            }
         }
 
     }
@@ -136,5 +156,12 @@ public class ResumenGasto extends Fragment {
     public String formatEmailFirebaseFormat(String email) {
         return email.replace(".", "_");
     }
+
+    public void showTotalDayAmount(Integer amount) {
+        TextView Mi_textview = (TextView) v1.findViewById(R.id.gtotal);
+        Mi_textview.setText(amount.toString() + " colones.");
+    }
+
+
 
 }
