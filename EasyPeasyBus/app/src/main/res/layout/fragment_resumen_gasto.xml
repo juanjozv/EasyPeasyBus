@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ResumenGasto">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="298dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/holo_orange_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="36dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rectanglebackgroundblue"
+                android:paddingVertical="10dp"
+                android:src="@drawable/ic_airport_shuttle_black_24dp" />
+
+            <TextView
+                android:id="@+id/tot"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/rectanglebackgroundblue"
+                android:paddingVertical="10dp"
+                android:text="Gasto del día: "
+                android:textColor="@android:color/background_light"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/gtotal"
+            android:layout_width="187dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="36dp"
+            android:background="@android:color/holo_orange_light"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/total"
+            app:layout_constraintTop_toBottomOf="@+id/list" />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

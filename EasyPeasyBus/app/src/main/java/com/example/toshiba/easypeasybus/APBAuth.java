@@ -8,6 +8,7 @@ public class APBAuth {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private Boolean isCreatingAccount;
+    private String dateSelected;
 
     private static APBAuth instance = null;
 
@@ -15,6 +16,7 @@ public class APBAuth {
         this.mAuth = FirebaseAuth.getInstance();
         this.currentUser = mAuth.getCurrentUser();
         this.isCreatingAccount = false;
+        this.dateSelected = "";
     }
 
     public static APBAuth getInstance() {
@@ -48,5 +50,13 @@ public class APBAuth {
 
     public void setCreatingAccount(Boolean creatingAccount) {
         isCreatingAccount = creatingAccount;
+    }
+
+    public String getDateSelected() {
+        return dateSelected;
+    }
+
+    public void setDateSelected(String dateSelected) {
+        this.dateSelected = dateSelected;
     }
 }
