@@ -75,23 +75,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         OnclickDelCardView(R.id.cardViewGastos);
         OnclickDelCardView(R.id.cardViewHorarios);
 
-        Calendar firingCal= Calendar.getInstance();
-        Calendar currentCal = Calendar.getInstance();
 
-
-        firingCal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        firingCal.set(Calendar.HOUR, 01); // At the hour you wanna fire
-        firingCal.set(Calendar.MINUTE, 02); // Particular minute
-        firingCal.set(Calendar.SECOND, 0); // particular second
-
-        Long intendedTime = firingCal.getTimeInMillis();
-        Long actualTime = currentCal.getTimeInMillis();
-        if(intendedTime > actualTime) {
-            Intent intent = new Intent(this, Receiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 22, intent, 0);
-            AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-            am.setRepeating(am.RTC_WAKEUP, intendedTime, am.INTERVAL_DAY*7, pendingIntent);
-        }
 
 
     }

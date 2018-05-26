@@ -56,7 +56,6 @@
         <activity android:name=".Horarios" />
         <activity android:name=".Planificador"></activity>
         <activity android:name=".Gastos" />
-        <activity android:name=".Probando"></activity>
 
         <receiver android:name="com.example.toshiba.easypeasybus.Receiver"></receiver>
     </application>

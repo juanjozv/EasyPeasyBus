@@ -1,8 +1,11 @@
 package com.example.toshiba.easypeasybus;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -11,22 +14,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Planificador extends AppCompatActivity{
-
-    private FirebaseDatabase mAuth;
-    private FirebaseAuth mUs;
 
     private static final String CERO = "0";
     private static final String DOS_PUNTOS = ":";
@@ -51,14 +49,14 @@ public class Planificador extends AppCompatActivity{
     ToggleButton tV;
     ToggleButton tS;
 
+    private int index = 0;
+
     private ArrayList<Integer> daysSelected = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planificador);
-        mUs = FirebaseAuth.getInstance();
-        mAuth = FirebaseDatabase.getInstance("https://easypeasybus.firebaseio.com/");
         etHora = (EditText) findViewById(R.id.et_mostrar_hora_picker);
         //Widget ImageButton del cual usaremos el evento clic para obtener la hora
         ibObtenerHora = (ImageButton) findViewById(R.id.ib_obtener_hora);
@@ -72,7 +70,13 @@ public class Planificador extends AppCompatActivity{
         tS = (ToggleButton) findViewById(R.id.tS);
 
         CardView crear = (CardView) findViewById(R.id.agregar_alerta);
-        crear.setOnClickListener(arg0 -> guardarAlertas());
+        crear.setOnClickListener(arg0 -> {
+            if (isValid()) {
+                crearAlertas();
+            } else {
+                mensajeOK("Debe seleccionar un día y una hora");
+            }
+        });
 
     }
 
@@ -91,6 +95,21 @@ public class Planificador extends AppCompatActivity{
         }, hora, minuto, false);
 
         recogerHora.show();
+    }
+
+    private void resetDays(){
+        tD.setChecked(false);
+        tL.setChecked(false);
+        tM.setChecked(false);
+        tMi.setChecked(false);
+        tJ.setChecked(false);
+        tV.setChecked(false);
+        tS.setChecked(false);
+        etHora.setText("");
+    }
+
+    private boolean isValid(){
+        return ((tD.isChecked()|| tL.isChecked() || tM.isChecked() || tMi.isChecked() || tJ.isChecked() || tV.isChecked() || tS.isChecked()) && etHora.getText().toString().length() > 0);
     }
 
     private void guardarDias() {
@@ -117,27 +136,76 @@ public class Planificador extends AppCompatActivity{
         }
     }
 
-    private void guardarAlertas() {
+    private void crearAlertas() {
+        getLastAlarmIndex();
         guardarDias();
         int size = daysSelected.size();
         while(size > 0){
-           // guardarAlerta(daysSelected.remove(0));
+            crearAlerta(daysSelected.remove(0));
             size--;
         }
+        saveIndex();
         mensajeOK("Se creó un nuevo recordatorio.");
+        resetDays();
+
     }
 
-    private void guardarAlerta(String dia) {
-        FirebaseUser user = mUs.getCurrentUser();
-        String email = formatEmailFirebaseFormat(user.getEmail());
-        String hora = etHora.getText().toString();
-        DatabaseReference mRef = mAuth.getReference("Planificador").child(dia).child(email);
-        Alerta newAlerta = new Alerta(hora);
-        mRef.push().setValue(newAlerta);
+    private void crearAlerta(int dia) {
+        APBAuth vg = APBAuth.getInstance();
+        String[] hora = etHora.getText().toString().split(":");
+        Calendar firingCal= Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
+        vg.setHora(etHora.getText().toString());
+        vg.setAlarmIndex(index++);
+        int hour = Integer.parseInt(hora[0]);
+        int minutes = Integer.parseInt(hora[1].substring(0, 2));
+        firingCal.set(Calendar.DAY_OF_WEEK, dia);
+        firingCal.set(Calendar.HOUR, hour); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, minutes - 5); // Particular minute
+        firingCal.set(Calendar.SECOND, 0); // particular second
+
+        Long intendedTime = firingCal.getTimeInMillis();
+        Long actualTime = currentCal.getTimeInMillis();
+        //if(intendedTime > actualTime) {
+            Intent intent = new Intent(this, Receiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, vg.getAlarmIndex(), intent, 0);
+            AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+            am.setRepeating(am.RTC_WAKEUP, intendedTime, am.INTERVAL_DAY * 7, pendingIntent);
+       // }
     }
 
-    public String formatEmailFirebaseFormat(String email) {
-        return email.replace(".", "_");
+
+
+    public void getLastAlarmIndex(){
+
+        final int tam_bloque_lectura = 100;
+        try
+        {
+            FileInputStream fIn = openFileInput("index_alerta");
+            InputStreamReader isr = new InputStreamReader(fIn);
+            char[] inputBuffer = new char[tam_bloque_lectura];
+            int charRead;
+            if ((charRead = isr.read(inputBuffer)) > 0) {
+                String readString = String.copyValueOf(inputBuffer, 0, charRead);
+                index = Integer.parseInt(readString);
+            }
+            isr.close();
+
+        }
+        catch (IOException ioe) {
+            index = 0;
+        }
+    }
+
+    public void saveIndex(){
+        try {
+            FileOutputStream fOut = openFileOutput("index_alerta", MODE_PRIVATE);
+            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+            osw.write(String.valueOf(index));
+            osw.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     public void mensajeOK(String msg){

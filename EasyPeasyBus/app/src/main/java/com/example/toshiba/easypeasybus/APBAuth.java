@@ -9,6 +9,8 @@ public class APBAuth {
     private FirebaseUser currentUser;
     private Boolean isCreatingAccount;
     private String dateSelected;
+    private String hora;
+    private int alarmIndex;
 
     private static APBAuth instance = null;
 
@@ -58,5 +60,25 @@ public class APBAuth {
 
     public void setDateSelected(String dateSelected) {
         this.dateSelected = dateSelected;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public static void setInstance(APBAuth instance) {
+        APBAuth.instance = instance;
+    }
+
+    public int getAlarmIndex() {
+        return alarmIndex;
+    }
+
+    public void setAlarmIndex(int alarmIndex) {
+        this.alarmIndex = alarmIndex;
     }
 }

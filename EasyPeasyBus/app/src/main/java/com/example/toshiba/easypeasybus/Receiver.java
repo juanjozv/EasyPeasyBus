@@ -15,16 +15,17 @@ public class Receiver extends BroadcastReceiver {
     }
 
     public void showNotification(Context context) {
-        Intent intent = new Intent(context, Probando.class);
-        PendingIntent pi = PendingIntent.getActivity(context, 22, intent, 0);
+        APBAuth vg = APBAuth.getInstance();
+        Intent intent = new Intent(context, Main.class);
+        PendingIntent pi = PendingIntent.getActivity(context, vg.getAlarmIndex(), intent, 0);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_airport_shuttle_black_24dp)
-                .setContentTitle("Auto Peasy Bus Le recuerda:")
-                .setContentText("Que mop pura vid.....pichaaaa");
+                .setContentTitle("Auto Peasy Bus le recuerda:")
+                .setContentText("Su bus sale dentro de 5 minutos");
         mBuilder.setContentIntent(pi);
         mBuilder.setDefaults(Notification.DEFAULT_SOUND);
         mBuilder.setAutoCancel(true);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(22, mBuilder.build());
+        mNotificationManager.notify(vg.getAlarmIndex(), mBuilder.build());
     }
 }
