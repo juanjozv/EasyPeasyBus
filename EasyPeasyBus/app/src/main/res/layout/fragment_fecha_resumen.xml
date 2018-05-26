@@ -13,36 +13,59 @@
         android:layout_height="match_parent"
         tools:context="com.a01luisrene.pickers.PickersActivity">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="279dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Seleccione una Fecha"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="191dp"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="22dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/daypicker"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginVertical="16dp"
+                android:background="@drawable/cerclebackgroundyellow"
+                android:padding="10dp"
+                android:src="@drawable/ic_date_range_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Seleccione una fecha para procesar"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/horario"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="20dp" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/et_mostrar_fecha_picker"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="32dp"
-            android:background="@color/colorPrimary"
-            android:textColorHint="@android:color/white"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="dd-mm-yyyy"
+
             android:inputType="date"
-            android:textColor="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <ImageButton
             android:id="@+id/ib_obtener_fecha"
@@ -50,13 +73,13 @@
             android:layout_height="40dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:background="@color/colorPrimaryDark"
             android:src="@drawable/ic_date_range_black_24dp"
-            app:layout_constraintHorizontal_bias="0.289"
+            app:layout_constraintHorizontal_bias="0.326"
             app:layout_constraintLeft_toRightOf="@+id/et_mostrar_fecha_picker"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:ignore="ContentDescription" />
 
         <LinearLayout
@@ -64,8 +87,8 @@
             android:id="@+id/Ir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="212dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginStart="196dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_mostrar_fecha_picker">
@@ -74,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/rectanglebackgroundblue"
+                android:background="@drawable/background_primary"
                 android:paddingVertical="10dp"
                 android:src="@drawable/ic_arrow_forward_black_24dp" />
 
@@ -83,7 +106,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/rectanglebackgroundblue"
+                android:background="@drawable/background_primary"
+                android:paddingHorizontal="5dp"
                 android:paddingVertical="10dp"
                 android:text="Ingresar a fecha "
                 android:textColor="@android:color/background_light"
