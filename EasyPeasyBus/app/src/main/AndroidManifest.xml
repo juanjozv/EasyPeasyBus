@@ -53,11 +53,11 @@
             android:name=".Login"
             android:label="@string/title_activity_login" />
         <activity android:name=".Info" />
-        <activity android:name=".Horario">
-        </activity>
-        <activity
-            android:name=".Gastos"
-            />
+        <activity android:name=".Horario"></activity>
+        <activity android:name=".Gastos" />
+        <activity android:name=".Probando"></activity>
+
+        <receiver android:name="com.example.toshiba.easypeasybus.Receiver"></receiver>
     </application>
 
 </manifest>

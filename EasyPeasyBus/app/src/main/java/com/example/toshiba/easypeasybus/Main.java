@@ -1,5 +1,9 @@
 package com.example.toshiba.easypeasybus;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +26,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Calendar;
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,6 +74,24 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         OnclickDelCardView(R.id.cardViewPlanificador);
         OnclickDelCardView(R.id.cardViewGastos);
         OnclickDelCardView(R.id.cardViewHorarios);
+
+        Calendar firingCal= Calendar.getInstance();
+        Calendar currentCal = Calendar.getInstance();
+
+
+        firingCal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        firingCal.set(Calendar.HOUR, 01); // At the hour you wanna fire
+        firingCal.set(Calendar.MINUTE, 02); // Particular minute
+        firingCal.set(Calendar.SECOND, 0); // particular second
+
+        Long intendedTime = firingCal.getTimeInMillis();
+        Long actualTime = currentCal.getTimeInMillis();
+        if(intendedTime > actualTime) {
+            Intent intent = new Intent(this, Receiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 22, intent, 0);
+            AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+            am.setRepeating(am.RTC_WAKEUP, intendedTime, am.INTERVAL_DAY*7, pendingIntent);
+        }
 
 
     }
@@ -214,4 +238,16 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 }
         });
     }
+
+    public void MensajeOK(String msg){
+        View v1 = getWindow().getDecorView().getRootView();
+        AlertDialog.Builder builder1 = new AlertDialog.Builder( v1.getContext());
+        builder1.setMessage(msg);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {} });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+        ;};
 }
