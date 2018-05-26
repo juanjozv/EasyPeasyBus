@@ -53,7 +53,8 @@
             android:name=".Login"
             android:label="@string/title_activity_login" />
         <activity android:name=".Info" />
-        <activity android:name=".Horario"></activity>
+        <activity android:name=".Horarios" />
+        <activity android:name=".Planificador"></activity>
     </application>
 
 </manifest>

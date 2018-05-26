@@ -190,13 +190,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         break;
 
                     case R.id.cardViewPlanificador:
-                        String url = "http://maps.google.com/maps?saddr=" + 9.996557 + "," + -84.085443 + "&daddr=" + 9.984507 + "," + -84.086754 + "&mode=transit";
-                        //"http://maps.google.com/maps?saddr="+ starting_point_lat+","+starting_point_long+"&daddr="+dest_point_lat+","+dest_point_long+"&mode=transit"
-
-                        intento = new Intent(android.content.Intent.ACTION_VIEW,
-                                Uri.parse(url));
+                        intento = new Intent(getApplicationContext(), Planificador.class);
                         startActivity(intento);
-
                         break;
 
                     case R.id.cardViewGastos:
@@ -205,7 +200,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         break;
 
                     case R.id.cardViewHorarios:
-                        intento = new Intent(getApplicationContext(), Horario.class);
+                        intento = new Intent(getApplicationContext(), Horarios.class);
                         startActivity(intento);
                         break;
                     default:

@@ -25,4 +25,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="titulo_pickers">Obtener fecha y hora</string>
+
+    <string name="formato_fecha">dd/mm/yyyy</string>
+    <string name="formato_hora">hh:mm</string>
 </resources>

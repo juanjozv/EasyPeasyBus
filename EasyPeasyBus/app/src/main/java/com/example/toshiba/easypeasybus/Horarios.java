@@ -17,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Horario extends AppCompatActivity {
+public class Horarios extends AppCompatActivity {
 
     private FirebaseDatabase mAuth;
     private ArrayList<String> puntosPartida;
