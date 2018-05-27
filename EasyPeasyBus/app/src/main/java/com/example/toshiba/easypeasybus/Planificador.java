@@ -77,10 +77,7 @@ public class Planificador extends AppCompatActivity{
                 mensajeOK("Debe seleccionar un día y una hora");
             }
         });
-
     }
-
-
 
     private void obtenerHora(){
         TimePickerDialog recogerHora = new TimePickerDialog(this, (TimePicker view, int hourOfDay, int minute) -> {
@@ -178,7 +175,7 @@ public class Planificador extends AppCompatActivity{
 
     public void getLastAlarmIndex(){
 
-        final int tam_bloque_lectura = 100;
+        final int tam_bloque_lectura = 100000000;
         try
         {
             FileInputStream fIn = openFileInput("index_alerta");
