@@ -157,7 +157,7 @@ public class Planificador extends AppCompatActivity{
         int hour = Integer.parseInt(hora[0]);
         int minutes = Integer.parseInt(hora[1].substring(0, 2));
         firingCal.set(Calendar.DAY_OF_WEEK, dia);
-        firingCal.set(Calendar.HOUR, hour); // At the hour you wanna fire
+        firingCal.set(Calendar.HOUR_OF_DAY, hour); // At the hour you wanna fire
         firingCal.set(Calendar.MINUTE, minutes - 5); // Particular minute
         firingCal.set(Calendar.SECOND, 0); // particular second
 
