@@ -175,7 +175,7 @@ public class Planificador extends AppCompatActivity{
 
     public void getLastAlarmIndex(){
 
-        final int tam_bloque_lectura = 100000000;
+        final int tam_bloque_lectura = 100;
         try
         {
             FileInputStream fIn = openFileInput("index_alerta");
