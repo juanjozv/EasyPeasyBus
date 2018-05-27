@@ -58,8 +58,6 @@ public class FechaResumen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
         View view = inflater.inflate(R.layout.fragment_fecha_resumen, container, false);
         v1 = view;
         //Widget EditText donde se mostrara la fecha obtenida
@@ -75,7 +73,6 @@ public class FechaResumen extends Fragment {
             public void onClick(View v)
             {
                 obtenerFecha();
-
 
             }
         });
@@ -97,7 +94,6 @@ public class FechaResumen extends Fragment {
                 fragmentTransaction.replace(R.id.contenedor, mifrag2, "Indentifier3");
                 fragmentTransaction.commit();
 
-
             } else {
                 if(fecha.equals("")) {
                     MensajeOK("Fecha vacía");
@@ -106,12 +102,7 @@ public class FechaResumen extends Fragment {
                 }
             }
 
-
-
-
         });
-
-
         return view;
     }
 

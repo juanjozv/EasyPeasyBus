@@ -162,6 +162,4 @@ public class ResumenGasto extends Fragment {
         Mi_textview.setText(amount.toString() + " colones.");
     }
 
-
-
 }
